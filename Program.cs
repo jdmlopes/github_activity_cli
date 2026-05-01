@@ -2,21 +2,17 @@
 
 RootCommand root = new RootCommand("My CLI app description");
 
-Argument<string> nameArgument = new("name")
+Argument<string> username = new("username")
 {
-    Description = "a name to greet",
-    DefaultValueFactory = result => "World"
+    Description = "username of the user to search for activity"
 };
 
-Command greetCommand = new Command("greet", "Greet the user by name")
+root.Arguments.Add(username);
+
+root.SetAction(result =>
 {
-    nameArgument
-};
-
-greetCommand.SetAction( result => Console.WriteLine($"Hello, {result.GetValue(nameArgument)}") );
-
-root.Subcommands.Add(greetCommand);
-
+    Console.WriteLine($"Todo: fetch user data for user '{result.GetValue(username)}'");
+});
 ParseResult parseResult = root.Parse(args);
 
 return parseResult.Invoke();
